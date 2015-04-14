@@ -54,7 +54,7 @@ public class FeatureExtraction {
 	public static void extractMR(String infile, String outfile) 
 			throws IOException, ClassNotFoundException, InterruptedException{
 		
-		Configuration conf=new Configuration();
+		Configuration conf = new Configuration();
 		
 		//pass the parameters
 		conf.set("seqfile", infile);
@@ -77,9 +77,9 @@ public class FeatureExtraction {
 		System.out.println("\nFeatureExtraction: Setting number of reducer adaptively");
 	    int default_num_reducer = 100;
 		FileSystem fs = FileSystem.get(conf);
-		ContentSummary cs =fs.getContentSummary(new Path(infile));
-		long input_size=cs.getLength();//cs.getSpaceConsumed();
-		default_num_reducer=(int)(Math.ceil( ((double)input_size)/(1024*1024*64) ));//50MB PER REducer
+		ContentSummary cs = fs.getContentSummary(new Path(infile));
+		long input_size = cs.getLength();//cs.getSpaceConsumed();
+		default_num_reducer = (int)(Math.ceil( ((double)input_size)/(1024*1024*64) ));//50MB PER REducer
 		System.out.println("Path: "+infile+" size "+input_size+", will use "+default_num_reducer+" reducer(s)\n\n");
 		job.setNumReduceTasks(default_num_reducer);
 		
@@ -107,9 +107,9 @@ public class FeatureExtraction {
 		
 		@Override
 		public void setup( Context context) {
-			Configuration conf=context.getConfiguration();
-		   img_folder=conf.get("seqfile");
-		   feature_folder=conf.get("feature_folder");
+			Configuration conf = context.getConfiguration();
+		   img_folder = conf.get("seqfile");
+		   feature_folder = conf.get("feature_folder");
 		   
 		   //used for feature count
 		   Path p = new Path(feature_folder);
@@ -128,7 +128,7 @@ public class FeatureExtraction {
 				featurecount_filename = new Path( key.toString()).getName();
 			}
 			try{
-				byte[] image_bytes=value.getBytes();
+				byte[] image_bytes = value.getBytes();
 				if(image_bytes.length>0){
 					BufferedImage img = ImageIO.read(new ByteArrayInputStream(value.getBytes()));
 					String[] features = SIFT.getFeatures(img);
@@ -169,11 +169,11 @@ public class FeatureExtraction {
 				return;
 			}
 			Configuration conf = context.getConfiguration();
-			FileSystem fs =FileSystem.get(conf);
+			FileSystem fs = FileSystem.get(conf);
 			FSDataOutputStream writer = fs.create(new Path(feature_count_path, featurecount_filename));
-			StringBuilder sb=new StringBuilder();
+			StringBuilder sb = new StringBuilder();
 			sb.append("" + feature_count);
-			byte[] byt=sb.toString().getBytes();
+			byte[] byt = sb.toString().getBytes();
 			writer.write(byt);
 			writer.close();
 		}

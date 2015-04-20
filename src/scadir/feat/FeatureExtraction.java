@@ -87,7 +87,7 @@ public class FeatureExtraction {
 		job.waitForCompletion(true);
 	}
 	
-	/*
+	/**
 	 * Mapper implementation for feature Extraction
 	 */
 	public static class FEMap extends Mapper<Text,BytesWritable, Text, VectorWritable> {

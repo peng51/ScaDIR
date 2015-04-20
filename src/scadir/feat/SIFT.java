@@ -18,17 +18,21 @@ import net.semanticmetadata.lire.imageanalysis.sift.Feature;
 
 public class SIFT {
 	private static Extractor extractor = new Extractor();
-		
+	
+	/**
+	 * main function for test
+	 * @param args
+	 * @throws IOException
+	 */
 	public static void main(String[] args) throws IOException {
 		FileSystem fs = FileSystem.get(new Configuration());
 		BufferedImage img = ImageIO.read(fs.open(new Path("data/images/all_souls_000073.jpg")));
 		getFeatures(img);
 	}	
 		
-	/*
-	 * Return SIFT feature in Java String Array.
+	/**
+	 * Return SIFT feature in String Array.
 	 * @param img the BufferedImage of the picture
-	 * 
 	 */
 	public static String[] getFeatures(BufferedImage img) throws IOException {
 		List<Feature> features = extractor.computeSiftFeatures(img);

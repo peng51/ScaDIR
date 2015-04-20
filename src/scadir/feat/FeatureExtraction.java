@@ -31,68 +31,66 @@ import org.apache.mahout.math.VectorWritable;
 
 public class FeatureExtraction {
 	
-	public static final int feature_length=128;
-	public static final Integer split_size = (int) (1024*1024*128);//128MB
+	public static final int featureLength=128;
+	public static final Integer splitSize = (int) (1024*1024*128);//128MB
 	
 	
-	/*
+	/**
 	 * entry for calling feature extraction
-	 * @param in_path path to the Sequencefiles of images
-	 * @param out_path outpath where the extracted features will be output.
+	 * @param inPath path to the Sequencefiles of images
+	 * @param outPath outpath where the extracted features will be output.
 	 */
-	public static void extractFeatures(String in_path,  String out_path) 
+	public static void extractFeatures(String inPath,  String outPath) 
 			throws ClassNotFoundException, IOException, InterruptedException{
-		
-		extractMR(in_path, out_path);
-		System.out.println("Feature extraction is done, featres output to " + out_path);
-		
+		extractMR(inPath, outPath);
+		System.out.println("Feature extraction is done, featres output to " + outPath);
 	}
 	
-	/*
+	/**
 	 * MR job for feature extraction
+	 * @inFile input file path
+	 * @outFile output file path
 	 */
-	public static void extractMR(String infile, String outfile) 
+	public static void extractMR(String inFile, String outFile) 
 			throws IOException, ClassNotFoundException, InterruptedException{
 		
 		Configuration conf = new Configuration();
 		
 		//pass the parameters
-		conf.set("seqfile", infile);
+		conf.set("seqfile", inFile);
 		//conf.set("fn", fn);
-		conf.set("feature_folder", outfile);
+		conf.set("feature_folder", outFile);
 		conf.set("outfile","test");
-		conf.set("mapred.max.split.size", split_size.toString());
+		conf.set("mapred.max.split.size", splitSize.toString());
 		Job job = new Job(conf);
 		job.setJobName("FeatureExtractionSeqFile");
 		job.setJarByClass(FeatureExtraction.class);
 		job.setMapperClass(FeatureExtraction.FEMap.class);
-		
 		
 		job.setInputFormatClass(SequenceFileInputFormat.class);
 		job.setOutputFormatClass(SequenceFileOutputFormat.class);
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(VectorWritable.class);
 		
-	
 		System.out.println("\nFeatureExtraction: Setting number of reducer adaptively");
 	    int default_num_reducer = 100;
 		FileSystem fs = FileSystem.get(conf);
-		ContentSummary cs = fs.getContentSummary(new Path(infile));
+		ContentSummary cs = fs.getContentSummary(new Path(inFile));
 		long input_size = cs.getLength();//cs.getSpaceConsumed();
 		default_num_reducer = (int)(Math.ceil( ((double)input_size)/(1024*1024*64) ));//50MB PER REducer
-		System.out.println("Path: "+infile+" size "+input_size+", will use "+default_num_reducer+" reducer(s)\n\n");
+		System.out.println("Path: "+inFile+" size "+input_size+", will use "+default_num_reducer+" reducer(s)\n\n");
 		job.setNumReduceTasks(default_num_reducer);
 		
-		FileInputFormat.setInputPaths(job, new Path(infile));
-		FileOutputFormat.setOutputPath(job, new Path(outfile));
+		FileInputFormat.setInputPaths(job, new Path(inFile));
+		FileOutputFormat.setOutputPath(job, new Path(outFile));
 		
 		job.waitForCompletion(true);
 	}
 	
 	/*
-	 * Mapper for feature Extraction
+	 * Mapper implementation for feature Extraction
 	 */
-	public static class FEMap extends  Mapper<Text,BytesWritable, Text, VectorWritable> {
+	public static class FEMap extends Mapper<Text,BytesWritable, Text, VectorWritable> {
 		public static String img_folder = null;
 		public static String fn = null;
 		public static String feature_folder =null;
@@ -103,7 +101,7 @@ public class FeatureExtraction {
 		static String featurecount_filename = null;
 		
 		static VectorWritable vw = new VectorWritable();
-		static Vector vec = new DenseVector(feature_length);
+		static Vector vec = new DenseVector(featureLength);
 		
 		@Override
 		public void setup( Context context) {
@@ -133,7 +131,7 @@ public class FeatureExtraction {
 					BufferedImage img = ImageIO.read(new ByteArrayInputStream(value.getBytes()));
 					String[] features = SIFT.getFeatures(img);
 					for(int i = 0; i < features.length; i++){
-						double[]  feature = getPoints(features[i].split(" "), feature_length);
+						double[]  feature = getPoints(features[i].split(" "), featureLength);
 						
 						vec.assign(feature);
 						vw.set(vec);
@@ -160,7 +158,7 @@ public class FeatureExtraction {
 			
 		}
 		
-		/*
+		/**
 		 * write the feature_count to the feature_count_path/file_name(non-Javadoc)
 		 * @see org.apache.hadoop.mapreduce.Mapper#cleanup(org.apache.hadoop.mapreduce.Mapper.Context)
 		 */
@@ -178,7 +176,7 @@ public class FeatureExtraction {
 			writer.close();
 		}
 
-		/*
+		/**
 		 * Convert a String array of features to double array
 		 */
 		public static double[] getPoints(String[] args, int size){

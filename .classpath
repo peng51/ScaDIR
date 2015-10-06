@@ -5,5 +5,11 @@
 	<classpathentry kind="lib" path="lib/hadoop-core-1.2.1.jar"/>
 	<classpathentry kind="lib" path="lib/lire.jar"/>
 	<classpathentry kind="lib" path="lib/mahout-core-0.8-job.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j-2.0.0-ALPHA-2.jar"/>
+	<classpathentry kind="lib" path="lib/solr-solrj-4.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/httpcore-4.2.5.jar"/>
+	<classpathentry kind="lib" path="lib/httpclient-4.2.6.jar"/>
+	<classpathentry kind="lib" path="lib/httpmime-4.2.6.jar"/>
+	<classpathentry kind="lib" path="lib/noggit-0.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -32,12 +32,13 @@ import org.apache.mahout.math.VectorWritable;
 public class FeatureExtraction {
 	
 	public static final int featureLength=128;
-	public static final Integer splitSize = (int) (1024*1024*128);//128MB
+	//modify this to change workload for each mapper
+	public static final Integer splitSize = (int) (1024*1024*64);//128MB
 	
 	
 	/**
 	 * entry for calling feature extraction
-	 * @param inPath path to the Sequencefiles of images
+	 * @param inPath path to the Sequencefiles of images(Text, Binary)
 	 * @param outPath outpath where the extracted features will be output.
 	 */
 	public static void extractFeatures(String inPath,  String outPath) 

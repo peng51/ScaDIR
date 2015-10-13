@@ -84,7 +84,7 @@ public class Pipeline_mmd {
 		
 		//step 2 VW: clustering and histgram
 		String[] arguments_vw = {features, output, "" + topk, "" + botk};
-		String runningtime = VCDriver.run(arguments_vw, 2,1);
+//		String runningtime = VCDriver.run(arguments_vw, 2,1);
 		
 		//step 3 : get the vw.txt, tw.txt and vw_tw.txt
 		// will generate vw.txt, vw_tw.txt, tw.txt in dst/data dir

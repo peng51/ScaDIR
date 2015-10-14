@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -286,6 +287,10 @@ public class Pipeline_mmd {
 		Path folder_path = new Path(query_folder + "/queries.txt");
 		BufferedReader br=new BufferedReader(new InputStreamReader(fs.open(folder_path)));
 		
+		//write the vw words of query images to a file query_folder/queries_vw.txt
+		Path queries_vw = new Path(query_folder + "/queries_vw.txt");
+		BufferedWriter bw_vw = new BufferedWriter(new OutputStreamWriter(fs.create(queries_vw)));
+		
 		String inline = null;
 		//HashMap<String, Double> all_aps = new HashMap<String, Double>();
 		while((inline = br.readLine()) != null){
@@ -315,6 +320,7 @@ public class Pipeline_mmd {
 				
 					//create the query (with only vw)
 					String qs_vw = createQuery(query_img);
+					bw_vw.write(query_img + "\t" + qs_vw + "\n");
 					//get the qs of vw + tx
 					String qs = "";
 					
@@ -356,7 +362,8 @@ public class Pipeline_mmd {
 			}
 		}
 		br.close();
-		
+		bw_vw.flush();
+		bw_vw.close();
 		double mAP = 0;
 		for(Double ap : aps.values()){
 			mAP += ap;

@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Date;
@@ -213,6 +214,12 @@ public class Twitter_pipeline {
 		FileSystem fs = FileSystem.get(conf);
 		Path folder_path = new Path(query_folder + "/queries_less.txt");
 		BufferedReader br=new BufferedReader(new InputStreamReader(fs.open(folder_path)));
+		BufferedWriter bw_vw = null;
+		if(type == 0){
+			//write the vw words of query images to a file query_folder/queries_vw.txt
+			Path queries_vw = new Path(query_folder + "/queries_vw.txt");
+			bw_vw = new BufferedWriter(new OutputStreamWriter(fs.create(queries_vw)));
+		}
 		
 		String inline = null;
 		int num_query_img = 0;
@@ -238,6 +245,7 @@ public class Twitter_pipeline {
 				if(type == 0){
 					//create the query (with only vw)
 					qs = createQuery(query_img);
+					bw_vw.write(query_img + "\t" + qs + "\n");
 				}
 				else{
 					qs = search_tw;
@@ -263,6 +271,11 @@ public class Twitter_pipeline {
 				
 				
 			}
+		}
+		
+		if(type == 0){
+			bw_vw.flush();
+			bw_vw.close();
 		}
 		br.close();
 		endTime = System.currentTimeMillis();

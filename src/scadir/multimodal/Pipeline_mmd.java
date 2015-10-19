@@ -30,9 +30,9 @@ import scadir.util.HadoopUtil;
 import scadir.voca.VCDriver;
 
 /*
- * pipeline for mmd dataset
+ * pipeline for google search dataset, 34 categories
  */
-public class Pipeline_mmd {
+public class Pipeline_mmd{
 	static final boolean use_opencv = false;
 	
 	//type = 0 vw + tw,
@@ -89,7 +89,7 @@ public class Pipeline_mmd {
 		
 		//step 3 : get the vw.txt, tw.txt and vw_tw.txt
 		// will generate vw.txt, vw_tw.txt, tw.txt in dst/data dir
-		String images_root = eval_data_root +"/mmd-3/";
+		String images_root = eval_data_root +"/images/";
 		MultiFreq.run(images_root, output, num_per_category);
 		
 		//step 4&5 indexing and searching
@@ -116,7 +116,7 @@ public class Pipeline_mmd {
 		String botk = args[3];
 		String eval_data_root = args[4];
 		
-		String query_folder = eval_data_root + "/query-3";
+		String query_folder = eval_data_root + "/query";
 		type = 0;//use vw + tw
 		double mAP = evaluate(query_folder, topk, botk, dst, new HashMap<String, Double>(), new HashMap<String, String[]>());
 		
@@ -136,7 +136,7 @@ public class Pipeline_mmd {
 		String eval_data_root = args[4];
 		
 
-		String query_folder = eval_data_root + "/query-3";
+		String query_folder = eval_data_root + "/query";
 		
 		//evaluate
 		

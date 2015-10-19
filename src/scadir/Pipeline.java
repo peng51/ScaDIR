@@ -46,10 +46,10 @@ public class Pipeline {
 		String[] args = {features, output_root, "" + TopK, "" + BotK};
 		VCDriver.run(args, clustering_type, botleveltype);
 		
-		//representation
-		Histogram.runJob(features, cluster_num, clustering_root + "/clusters.txt", output_root + "/tmp", output_root + "/data/frequency.txt");
+		//representation done in VCDriver actually
+//		Histogram.runJob(features, cluster_num, clustering_root + "/clusters.txt", output_root + "/tmp", output_root + "/data/frequency.txt");
 		
-		//indexing
+/*		//indexing
 		Search.init(output_root + "/data/frequency.txt", cluster_num, clustering_root + "/clusters.txt", TopK, BotK);
 		Search.runIndexing(output_root + "/data/frequency.txt");
 		
@@ -60,6 +60,7 @@ public class Pipeline {
 		for(String str : results){
 			System.out.println(str);
 		}
+*/
 		
 	}
 }

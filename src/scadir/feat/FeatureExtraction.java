@@ -33,7 +33,7 @@ public class FeatureExtraction {
 	
 	public static final int featureLength=128;
 	//modify this to change workload for each mapper
-	public static final Integer splitSize = (int) (1024*1024*64);//128MB
+	public static final Integer splitSize = (int) (1024*1024*32);//128MB
 	
 	
 	/**

@@ -34,8 +34,8 @@ import scadir.voca.VCDriver;
  */
 public class Pipeline_mmd{
 	static final boolean use_opencv = false;
-	
-	//type = 0 vw + tw,
+	//type indicates the fusion type
+	//type = 0 vw + tw, -- early fusion
 	//type = 1 vw only
 	//type = 2 tw only
 	static int type = 2;
@@ -96,8 +96,8 @@ public class Pipeline_mmd{
 		String[] arguments = {features, output, topk, botk, eval_data_root};
 		run(arguments);
 		
-		//combined search
-		combinedSearch(arguments);
+		//combined search -- aka late fusion, muted here
+	//	combinedSearch(arguments);
 	}
 
 	
